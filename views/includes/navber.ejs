@@ -1,0 +1,58 @@
+<div class="main-navbar shadow-sm sticky-top">
+  <div class="top-navbar">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 my-auto d-none d-sm-none d-md-block d-lg-block">
+          <h5 class="brand-name">
+            <a class="navbar-brand" href="/listing"
+              ><i class="fa-solid fa-compass"></i
+            ></a>
+          </h5>
+        </div>
+        <div class="col-md-5 my-auto">
+          <form method="get" action="/search" role="search">
+            <div class="input-group">
+              <input
+                name="q"
+                type="search"
+                placeholder="Search your product"
+                class="form-control"
+              />
+              <button class="btn bg-white" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-5 my-auto">
+          <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link" href="/listing">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/listing/new">Addlisting</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Login">Login </a>
+            </li>
+
+            <% if(!currUser){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/SignUp">
+                SignUp <i class="fa-solid fa-arrow-right-to-bracket"></i>
+              </a>
+            </li>
+            <% } if (currUser) { %>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/LogOut"
+                ><i class="fa-solid fa-arrow-left"></i>LogOut</a
+              >
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

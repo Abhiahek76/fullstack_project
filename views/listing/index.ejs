@@ -1,0 +1,182 @@
+<% layout('layouts/boilerplate') -%>
+<style>
+  button {
+    border: none;
+  }
+  .text-infos {
+    display: none;
+  }
+</style>
+<!------------button------------>
+<div class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand d-block d-sm-block d-md-none d-lg-none" href="#">
+      Catagory
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="filter">
+          <button onclick="filterListings('all')">
+            <div><i class="fa-solid fa-globe"></i></div>
+            All Categories
+          </button>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Trending')">
+            <div><i class="fa-solid fa-fire"></i></div>
+            Trending
+          </button>
+        </div>
+        <div class="filter">
+          <button onclick="filterListings('Rooms')">
+            <div><i class="fa-solid fa-bed"></i></div>
+            Rooms
+          </button>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Iconic Cities')">
+            <div><i class="fa-solid fa-city"></i></div>
+            Iconic Cities
+          </button>
+        </div>
+        <div class="filter">
+          <div><i class="fa-brands fa-fort-awesome"></i></div>
+          <p>Castles</p>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Amazing pools')">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            Amazing Pools
+          </button>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Camping')">
+            <div><i class="fa-solid fa-campground"></i></div>
+            Camping
+          </button>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Farms')">
+            <div><i class="fa-solid fa-cow"></i></div>
+            Farms
+          </button>
+        </div>
+
+        <div class="filter">
+          <button onclick="filterListings('Arctic')">
+            <div><i class="fa-solid fa-newspaper"></i></div>
+            Arctic
+          </button>
+        </div>
+
+        <div class="text-toggle mt-2">
+          <div class="form-check-reverse form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="flexSwitchCheckDefault"
+            />
+
+            <label class="form-check-label" for="flexSwitchCheckDefault"
+              >Displytotal after taxes</label
+            >
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<!--------------------->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3"></div>
+<!--------------------------------->
+
+<script src="js/taxt.js"></script>
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3" id="listings">
+  <!-- Listings will be dynamically added here -->
+</div>
+<script>
+  // Convert the JSON string to a JavaScript object
+  const listings = <%-JSON.stringify(allistings)%>;
+  // Function to filter listings by category
+  function filterListingsByCategory(category) {
+    return category === "all"
+      ? listings
+      : listings.filter((listing) => listing.category === category);
+  }
+
+  // Function to display listings
+  function displayListings(listings) {
+    const listingsContainer = document.getElementById("listings");
+    listingsContainer.innerHTML = ""; // Clear previous listings
+
+    // Loop through each listing and create HTML elements for display
+    listings.forEach((listing) => {
+      const cardLink = document.createElement("a");
+      cardLink.setAttribute("href", `/listing/${listing._id}`);
+      cardLink.classList.add("card-link");
+
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card", "col");
+
+      const cardImg = document.createElement("img");
+      cardImg.setAttribute("src", listing.image.url);
+      cardImg.classList.add("card-img-top");
+      cardImg.setAttribute("alt", "listing");
+      cardImg.style.height = "20rem";
+
+      const cardImgOverlay = document.createElement("div");
+      cardImgOverlay.classList.add("card-img-overlay");
+
+      const heartIcon = document.createElement("i");
+      heartIcon.classList.add("fa-sharp", "fa-solid", "fa-heart", "overly-love");
+
+      const cardBody = document.createElement("div");
+      cardBody.classList.add("card-body");
+
+      const cardText = document.createElement("p");
+      cardText.classList.add("cart-text");
+      cardText.innerHTML = `<b>${listing.title}</b><br />&#8377;${listing.price}/night <i style="color: red" class="text-infos">&nbsp;&nbsp;+18% GST</i>`;
+
+      const categoryHeader = document.createElement("h4");
+      const categoryParagraph = document.createElement("p");
+      categoryParagraph.textContent = listing.category;
+      //categoryHeader.appendChild(categoryParagraph);
+      // Append elements to the card
+      cardImgOverlay.appendChild(heartIcon);
+      cardBody.appendChild(cardText);
+      cardBody.appendChild(categoryHeader);
+      cardDiv.appendChild(cardImg);
+      cardDiv.appendChild(cardImgOverlay);
+      cardDiv.appendChild(cardBody);
+      cardLink.appendChild(cardDiv);
+      listingsContainer.appendChild(cardLink);
+    });
+  }
+
+  // Automatically display all listings when the page loads
+  displayListings(listings);
+
+  // Function to filter listings based on category
+  function filterListings(category) {
+    const filteredListings = filterListingsByCategory(category);
+    displayListings(filteredListings);
+  }
+</script>

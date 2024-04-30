@@ -1,0 +1,98 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="row">
+  <div class="col-8 offset-2">
+    <h3>edit your listing</h3>
+    <form
+      method="post"
+      action="/listing/<%= editlisting._id %>?_method=PUT"
+      novalidate
+      enctype="multipart/form-data"
+      class="needs-validation"
+    >
+      <div>
+        <label for="exampleFormControlInput1" class="form-label">Title</label>
+        <input
+          type="text"
+          name="listing[title]"
+          class="form-control"
+          id="exampleFormControlInput1"
+          value="<%= editlisting.title%>"
+        />
+        <div class="valid-feedback">Title looks good!</div>
+      </div>
+      <!---- <label>description:</label>
+    <input type="text" name="listing[description]" required /><br /><br />-->
+      <dir class="mb-3">
+        <p>Orginal image</p>
+        <img style="height: 8rem; width: 8rem" src="<%=updetlisting%>" alt="" />
+      </dir>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label"
+          >Description</label
+        >
+        <input
+          class="form-control"
+          id="exampleFormControlTextarea1"
+          name="listing[description]"
+          rows="4"
+          value="<%= editlisting.description %>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Image</label>
+        <input
+          type="file"
+          name="listing[image]"
+          class="form-control"
+          id="exampleFormControlInput1"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Price</label>
+        <input
+          type="number"
+          name="listing[price]"
+          required
+          class="form-control"
+          id="exampleFormControlInput1"
+          value="<%= editlisting.price %>"
+        />
+        <div class="invalid-feedback">Price looks good!</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"
+          >Location</label
+        >
+        <input
+          type="text"
+          name="listing[location]"
+          required
+          class="form-control"
+          id="exampleFormControlInput1"
+          value="<%= editlisting.location%>"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Country</label>
+        <input
+          type="text"
+          name="listing[country]"
+          required
+          class="form-control"
+          id="exampleFormControlInput1"
+          value="<%= editlisting.country%>"
+        />
+      </div>
+
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
+</div>
+<!--------------------->
+
+<!------------->

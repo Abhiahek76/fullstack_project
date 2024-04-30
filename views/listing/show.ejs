@@ -1,0 +1,178 @@
+<% layout('layouts/boilerplate') -%>
+
+<div class="row offset-2">
+  <h4>Listing detel</h4>
+  <div class="card col-9">
+    <img class="show-img" src="<%=allisting.image.url%>" alt="" />
+    <p class="mt-2">
+      <i
+        class="fa-sharp fa-solid fa-circle-user"
+        style="color: #c3c4c7; font-size: 30px"
+      ></i
+      ><b><%= allisting.owner.username %></b>
+    </p>
+    <p class="card-text fw-medium" style="font-size: 0.8rem">
+      <%=allisting.description%>
+    </p>
+    <p class="card-text"><%=allisting.title %></p>
+    <h4 class="card-text">&#8377;<%= allisting.price %></h4>
+    <p class="card-text"><%=allisting.location %></p>
+    <p class="cart-text fw-semibold"><%=allisting .country %></p>
+  </div>
+  <% if (currUser&&currUser.equals(allisting.owner._id)){%>
+  <div class="btns">
+    <a class="btn btn-sm btn-primary" href="/listing/<%= allisting._id %>/edit"
+      >EDITING</a
+    >
+    <form method="post" action="/listing/<%= allisting._id %>?_method=DELETE">
+      <button class="btn btn-sm btn-danger">DELETE</button>
+    </form>
+  </div>
+  <% } %>
+
+  <div class="col-9">
+    <% if(currUser) { %>
+    <h6>Leave a Revew</h6>
+    <form
+      method="post"
+      action="/listing/<%= allisting._id %>/Reviews"
+      novalidate
+      class="needs-validation"
+    >
+      <div>
+        <!----  <label for="customRange1" class="form-label"><h6>Reting</h6></label>
+
+         <input
+          type="range"
+          class="form-range"
+          id="customRange1"
+          min="1"
+          max="5"
+          name="Reviews[reating]"
+          required
+        />
+      -->
+        <fieldset class="starability-slot">
+          <legend>Reting:</legend>
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="Reviews[reating]"
+            value="1"
+            checked
+            aria-label="No rating."
+          />
+          <input
+            type="radio"
+            id="first-rate1"
+            name="Reviews[reating]"
+            value="1"
+          />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input
+            type="radio"
+            id="first-rate2"
+            name="Reviews[reating]"
+            value="2"
+          />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input
+            type="radio"
+            id="first-rate3"
+            name="Reviews[reating]"
+            value="3"
+          />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input
+            type="radio"
+            id="first-rate4"
+            name="Reviews[reating]"
+            value="4"
+          />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input
+            type="radio"
+            id="first-rate5"
+            name="Reviews[reating]"
+            value="5"
+          />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+      </div>
+
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label"
+          >Comment</label
+        >
+        <textarea
+          class="form-control"
+          id="exampleFormControlTextarea1"
+          rows="3"
+          name="Reviews[commend]"
+          required
+        ></textarea>
+        <div class="invalid-feedback">pleas add the commend</div>
+      </div>
+
+      <button class="btn btn-sm btn-dark">Submit</button>
+    </form>
+    <% } %>
+  </div>
+  <h5 class="text-primary">All Reviews</h5>
+
+  <% for(let review of allisting.reviews ) { %>
+
+  <!-------------------->
+
+  <div
+    class="card border-dark mb-3"
+    style="max-width: 25rem; box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125)"
+  >
+    <div class="card-heade">
+      <i
+        class="fa-solid fa-circle-user"
+        style="font-size: 30px; color: #c3c4c7"
+      >
+      </i
+      ><b><%= review.author.username %></b>
+    </div>
+    <hr />
+    <div class="card-body">
+      <p class="starability-result" data-rating="<%= review.reating %>"></p>
+      <p class="card-text" style="font-size: 0.8rem"><%= review.commend%></p>
+      <% if(currUser) { %>
+      <form
+        class=""
+        method="post"
+        action="/listing/<%=allisting._id %>/Reviews/<%=review._id %>?_method=DELETE"
+      >
+        <button class="btn btn-sm btn-danger">DELETE</button>
+      </form>
+      <% } %>
+    </div>
+  </div>
+
+  <% } %>
+
+  <div class="col-9 mb-3">
+    <h3>Where you'll be</h3>
+    <div id="map"></div>
+  </div>
+</div>
+<script>
+   mapboxgl.accessToken =
+     "pk.eyJ1IjoiMWFiaGlzaGVrIiwiYSI6ImNsdWVoMWs1aTBhZ24yam9lbnBuYzNpNzUifQ.AFKGngPIrER00WeX0DFI9w";
+     const map = new mapboxgl.Map({
+     container: "map", // container ID
+     center: [88.363881,22.572672], // starting poscition [lng, lat]
+     zoom: 8, // starting zoom
+   });
+   const cordinets = <%-JSON.stringify(allisting.giometry.coordinates )%>;
+   console.log(cordinets);
+
+   // Create a new marker, set the longitude and latitude, and add it to the map.
+  const  marker  =new mapboxgl.Marker({color:"red"})
+   .setLngLat(cordinets)
+   .addTo(map);
+</script>
